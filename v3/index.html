@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel Datenabruf</title>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+    <h1>Meine eingebettete Excel-Tabelle</h1>
+    <div id="myExcelDiv" style="width: 500px; height: 300px"></div>
+    <button id="getDataButton">Daten abrufen</button>
+    <!-- * This code uses the Microsoft Office Excel Javascript object model to programmatically insert the
+         * Excel Web App into a div with id=myExcelDiv. The full API is documented at
+         * https://msdn.microsoft.com/de-DE/library/hh315812.aspx. There you can find out how to programmatically get
+         * values from your Excel file and how to use the rest of the object model. -->
+    <script type="text/javascript" src="https://onedrive.live.com/embed?resid=6B667B1F38771467%219796&authkey=%21ACDi9dVQfBjJ4jc&em=3&wdItem=%22'Sheet1'!O2%3AS4%22&wdDivId=%22myExcelDiv%22&wdDownloadButton=1&wdHideGridlines=1&wdAllowInteractivity=0"></script>   
+
+ 
+        <script>
+        // Funktion zum Abrufen der Daten
+        function getDataFromExcel() {
+            Excel.run(function (context) {
+                var sheet = context.workbook.worksheets.getActiveWorksheet();
+                var range = sheet.getRange("A1:C3"); // Beispielbereich
+                range.load("values");
+
+                return context.sync().then(function () {
+                    var values = range.values;
+                    console.log(values);
+                    alert("Daten: " + JSON.stringify(values));
+                });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+
+        // Event Listener für den Button
+        document.getElementById("getDataButton").addEventListener("click", getDataFromExcel);
+    </script>
+</body>
+</html>
